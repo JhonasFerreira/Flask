@@ -31,9 +31,9 @@ for cidade in lista_cidades:
 
 #Função para envio de email para o Candidato
 def enviar_email(destinatario):
-    meu_email = 'jhonasferreiralima@gmail.com'
-    senha = 'nmbqluyvuqovjpur'
-    assunto = 'Formulário Preenchido!'
+    meu_email = ''
+    senha = ''
+    assunto = 'Formulario Preenchido!'
     mensagem = 'Seus dados estão confirmados no nosso sistema.'
 
     msg = MIMEText(mensagem, 'plain', 'utf-8')
@@ -53,7 +53,7 @@ def enviar_email(destinatario):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = ''
 Bootstrap5(app)
 
 # CONECTANDO AO BANCO
@@ -246,7 +246,6 @@ def perfil(id):
             print(perfil.email)
             enviar_email(destinatario=perfil.email)
         return redirect(url_for('perfil',id=perfil.id))
-
     return render_template('perfil.html',perfil=perfil)
 
 #DOWNLOAD CURRICULO
@@ -272,14 +271,11 @@ def delete():
     db.session.commit()
     return redirect(url_for('cadastro'))
 
+#Função para Deslogar
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
-with app.app_context():
-    todos_cadastros = db.session.query(CadastroUsuario).all()
-    print(todos_cadastros)
     
 if __name__=='__main__':
     app.run(debug=True)
