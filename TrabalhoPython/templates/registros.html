@@ -1,0 +1,93 @@
+{%block content%}{% include 'header.html' %}
+
+<style>
+  table{
+  background: aliceblue;
+  box-shadow: 0px -1px 15px -5px black;
+  }
+
+</style>
+
+<header
+  class="masthead"
+  style="background-image: url('../static/assets/img/register-bg.jpg')"
+>
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="page-heading">
+          <h1>Tabela De Registro</h1>
+          <span class="subheading" style="font-size:medium">Visualização dos Registros de Candidatura</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<form class="form my-2 my-lg-0" action="{{ url_for('cadastro') }}" method="post">
+<!--<div class="d-flex justify-content-center">-->
+  <div class="container mb-5 ">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <input class="form-control mr-sm-1" name="search" type="search" placeholder="Pesquisar Candidato" aria-label="Search">
+      </div>
+      <div class="col-2">
+      <button class="btn btn-outline-success p-2" type="submit">Search</button>
+      </div>
+      </div>
+  </div>
+<!--</div>-->
+</form>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Candidatos</h1>
+      <table class="table">
+        <tr>
+          <th>nome</th>
+          <th>email</th>
+            <th>Idade</th>
+          <th>telefone</th>
+          <th>descrição</th>
+          <th>Status</th>
+          <th>Curriculo</th>
+          <th>Ações</th>
+        </tr>
+
+          {% for linha in cadastros: %}
+        <tr>
+          <td>{{linha.nome}}</td>
+          <td>{{linha.email}}</td>
+            <td>{{linha.idade}}</td>
+          <td>{{linha.telefone}}</td>
+           {%if linha.descricao:%}
+          <td><i class="fa-solid fa-check" style="color: #2bff00;"></i></td>
+            {%else:%}
+            <td><i class="fa-solid fa-xmark" style="color: #ff0000;"></i></td>
+            {%endif%}
+            <td>{{linha.status_candidatura}}</td>
+            {%if linha.curriculo:%}
+            <td><i class="fa-solid fa-check" style="color: #2bff00;"></i></td>
+            {%else:%}
+            <td><i class="fa-solid fa-xmark" style="color: #ff0000;"></i></td>
+            {%endif%}
+<!--  Botões para visualizar ou editar candidato          -->
+            <td>
+            <a href="{{url_for('perfil', id=linha.id)}}"><button type="button" class="btn btn-primary p-1"><i class="far fa-eye"></i>Perfil Completo</button></a>
+            <a href="{{url_for('delete',id = linha.id)}}"> <button type="button" class="btn btn-danger p-1"><i class="far fa-trash-alt"></i></button></a>
+
+            </td>
+          {%endfor%}
+      </table>
+    </div>
+  </div>
+</div>
+{%endblock%}
+{% include 'footer.html' %}
+
+
+
+
+

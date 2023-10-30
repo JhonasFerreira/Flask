@@ -1,0 +1,24 @@
+     {% for linha in cadastros: %}
+        <tr>
+          <td>{{linha.nome}}</td>
+          <td>{{linha.email}}</td>
+            <td>{{linha.idade}}</td>
+          <td>{{linha.telefone}}</td>
+           {%if linha.descricao:%}
+          <td><i class="fa-solid fa-check" style="color: #2bff00;"></i></td>
+            {%else:%}
+            <td><i class="fa-solid fa-xmark" style="color: #ff0000;"></i></td>
+            {%endif%}
+            <td>{{linha.status_candidatura}}</td>
+            {%if linha.curriculo:%}
+            <td><i class="fa-solid fa-check" style="color: #2bff00;"></i></td>
+            {%else:%}
+            <td><i class="fa-solid fa-xmark" style="color: #ff0000;"></i></td>
+            {%endif%}
+<!--  Botões para visualizar ou editar candidato          -->
+            <td>
+            <a href="{{url_for('perfil', id=linha.id)}}"><button type="button" class="btn btn-primary p-1"><i class="far fa-eye"></i>Perfil Completo</button></a>
+            <a href="{{url_for('delete',id = linha.id)}}"> <button type="button" class="btn btn-danger p-1"><i class="far fa-trash-alt"></i></button></a>
+
+            </td>
+          {%endfor%}

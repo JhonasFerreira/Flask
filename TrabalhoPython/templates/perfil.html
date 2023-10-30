@@ -1,0 +1,222 @@
+<head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Jhonas BLog</title>
+    {% block styles %}
+    <!-- Load Bootstrap-Flask CSS here -->
+    {{ bootstrap.load_css() }}
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='assets/favicon.ico') }}"
+    />
+    <!-- Font Awesome icons (free version)-->
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Google fonts-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link
+      href="{{ url_for('static', filename='css/styles.css') }}"
+      rel="stylesheet"
+    />
+    {% endblock %}
+  </head>
+{% block content%}
+
+<style>
+  p{
+  margin:2px;
+  }
+  .segunda{
+  background-color:#4ac07354;;
+  box-shadow: -1px -1px 10px -5px black;
+
+  }
+  .container{
+  padding:50px;
+  background:aliceblue;
+  }
+  .download{
+  color:aliceblue;
+  background-color:rgb(30,48,80);
+  border-radius:0 25% 0 25%;
+  padding:10px;
+  }
+  .curriculo_card p{
+      background-color: rgb(30,48,80);
+      color:white;
+      width:20%
+      display:flex;
+      justify-content:center;
+      border-radius:10px;
+  }
+</style>
+<div class="container">
+      <div class="py-5 text-center">
+        <h2>Dados Cadastrais</h2>
+      </div>
+      <div class="row">
+            <div class="col col-4">
+              <h6>Nome</h6>
+              <p>{{perfil.nome}}</p>
+            </div>
+            <div class="col-4 col-xs-6">
+             <h6>Email</h6>
+              <p>{{perfil.email}}</p>
+            </div>
+
+            <div class="col">
+              <h6>Cidade/Estado</h6>
+              <p>{{perfil.localidade}}</p>
+            </div>
+        <hr>
+          <div class="col-4">
+            <h6>Telefone</h6>
+            <p>{{perfil.telefone}}</p>
+          </div>
+
+          <div class="col-4">
+            <h6>Idade</h6>
+            <p>{{perfil.idade}}</p>
+          </div>
+
+          <div class="col-4">
+            <h6>Empregabilidade</h6>
+            <p>{{perfil.empregabilidade}}</p>
+          </div>
+
+          <hr class="mb-3">
+
+            <div class="col">
+              <h6>Expectativa Salarial</h6>
+              {%if perfil.expectativa_sal:%}
+                {{perfil.expectativa_sal}}
+              {%else:%}
+                Dado Não inserido
+                {%endif%}
+            </div>
+            <div class="col">
+              <h6>Status da Candidatura</h6>
+              {{perfil.status_candidatura}}
+            </div>
+        </div>
+        <hr class="mb-3">
+          {%if perfil.descricao:%}
+            <div class="row justify-content-md-center my-5 mb-2 segunda">
+              <div class="col">
+                <h1 style="text-align:center;">
+                    Experiencias
+                </h1>
+                {{perfil.descricao}}
+              </div>
+              </div>
+            </div>
+            {%else:%}
+            <div class="row justify-content-md-center segunda">
+            <div class="col-6 p-6 m-4  text-center"><span style="color:red;">Sem Descrição/Experiencias</span></div>
+            </div>
+            {%endif%}
+
+            <hr class="mb-4">
+
+              <h4 class="mb-3 text-center">Curriculo</h4>
+              <div class="row justify-content-md-center text-center curriculo_card">
+              <div class="col-5 mb-4">
+              <img class="download" src="../static/assets/pdf.png" width="45px" >
+              </div>
+              <div class="row justify-content-md-center text-center">
+
+                  <div class="col-2 mb-4">
+                <a href="{{ url_for('get_curriculo',id_curriculo=perfil.id) }}"><p> baixar<i class="fa-solid fa-download pd-2" ></i></p></a>
+                </div>
+              <div class="col-2 mb-4">
+                <a href="{{url_for('visualizar_curriculo', id_curriculo=perfil.id) }}"><p>Visualizar<i class="far fa-eye"></i></p></a>
+              </div>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+<!--Caso o candidado esteja aprovado-->
+            {% if perfil.status_candidatura == 'Aprovado':%}
+            <div class="row justify-content-md-center text-center my-2">
+              <div class="col-2">
+                  <h4>Status Candidato</h4>
+            <button class="btn btn-success btn-lg btn-block my-3" type="submit">Aprovado</button>
+              </div>
+                <div class="row text-center mb-1 my-5">
+                <div class="col">
+                <a href="{{url_for('perfil',id=perfil.id,editar=True)}}"><i class="fa-solid fa-pen-to-square"></i>Editar Status </a>
+                </div>
+            </div>
+
+<!-- Cajo o usuario tenha sido rejeitado             -->
+              {%elif perfil.status_candidatura == 'Rejeitado':%}
+              <div class="row justify-content-md-center text-center my-2">
+              <div class="col-2">
+                  <h4>Status Candidato</h4>
+            <button class="btn btn-danger btn-lg btn-block my-3" type="submit">Rejeitado</button>
+              </div>
+                  <div class="row text-center mb-1 my-4">
+                <div class="col">
+                <a href="{{url_for('perfil',id=perfil.id,editar=True)}}"><i class="fa-solid fa-pen-to-square"></i>Editar Status </a>
+                </div>
+            </div>
+              {%else:%}
+            <div class="row justify-content-md-center text-center my-5">
+              <div class="col-2">
+                  <h4>Status Candidato</h4>
+                  <a href="{{url_for('perfil',id=perfil.id,status = 'Aprovado')}}"><button class="btn btn-primary btn-lg btn-block" type="submit">Aprovado</button></a>
+              </div>
+
+              <div class="col-1">
+                <a href="#"><i class="fa-regular fa-lg fa-clock "></i></a>
+              </div>
+
+              <div class="col-2">
+            <a href="{{url_for('perfil',id=perfil.id, status = 'Rejeitado')}}"><button class="btn btn-danger btn-lg btn-block" type="submit">Rejeitar</button></a>
+              </div>
+            </div>
+            {%endif%}
+
+        {%if editar:%}
+          <div class="row justify-content-md-center text-center my-5">
+              <div class="col-2">
+                  <a href="{{url_for('perfil',id=perfil.id,status = 'Aprovado')}}"><button class="btn btn-primary btn-lg btn-block" type="submit">Aprovar</button></a>
+              </div>
+
+              <div class="col-1">
+                <a href="#"><i class="fa-regular fa-lg fa-clock "></i></a>
+              </div>
+
+              <div class="col-2">
+            <a href="{{url_for('perfil',id=perfil.id, status = 'Rejeitado')}}"><button class="btn btn-danger btn-lg btn-block" type="submit">Rejeitar</button></a>
+              </div>
+            </div>
+        {%endif%}
+
+        </div>
+      </div>
+            <div class="row text-center my-3">
+                <div class="col">
+                <a href="{{url_for('cadastro')}}"><i class="fa-solid fa-door-open"></i>Voltar para Cadastros </a>
+                </div>
+            </div>
+{%endblock%}
+{% include 'footer.html' %}
